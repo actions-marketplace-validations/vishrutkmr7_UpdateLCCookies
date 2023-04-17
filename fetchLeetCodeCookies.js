@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const axios = require('axios');
 const fs = require('fs');
+const { encrypt } = require('node-rsa-secrets'); // Add this package as a dependency
 
 const email = process.env.LEETCODE_EMAIL;
 const password = process.env.LEETCODE_PASSWORD;
@@ -9,8 +10,7 @@ const githubToken = process.env.GITHUB_TOKEN;
 // Function to update GitHub secrets
 async function updateGitHubSecret(secretName, secretValue) {
   const token = githubToken;
-  const owner = 'OWNER'; // Replace with your GitHub username or organization name
-  const repo = 'REPO'; // Replace with your repository name
+  const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/'); // Get owner and repository name from environment variable
 
   const url = `https://api.github.com/repos/${owner}/${repo}/actions/secrets/${secretName}`;
 
