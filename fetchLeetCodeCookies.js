@@ -1,39 +1,16 @@
 const puppeteer = require('puppeteer');
+const axios = require('axios');
 const fs = require('fs');
 
-(async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+const email = process.env.LEETCODE_EMAIL;
+const password = process.env.LEETCODE_PASSWORD;
+const githubToken = process.env.GITHUB_TOKEN;
 
-  // Navigate to LeetCode login page
-  await page.goto('https://leetcode.com/accounts/login/');
-
-  // Fill in the email and password fields
-  await page.type('#id_login', 'your_email@example.com');
-  await page.type('#id_password', 'your_password');
-
-  // Click on the submit button
-  await Promise.all([
-    page.waitForNavigation(),
-    page.click('button[type="submit"]'),
-  ]);
-
-  // Get the CSRF token and session cookie
-  const csrfToken = (await page.cookies()).find(cookie => cookie.name === 'csrftoken').value;
-  const session = (await page.cookies()).find(cookie => cookie.name === 'LEETCODE_SESSION').value;
-
-  console.log('CSRF Token:', csrfToken);
-  console.log('Session:', session);
-
-  await browser.close();
-})();
-
-const axios = require('axios');
-
+// Function to update GitHub secrets
 async function updateGitHubSecret(secretName, secretValue) {
-  const token = 'YOUR_GITHUB_TOKEN';
-  const owner = 'OWNER';
-  const repo = 'REPO';
+  const token = githubToken;
+  const owner = 'OWNER'; // Replace with your GitHub username or organization name
+  const repo = 'REPO'; // Replace with your repository name
 
   const url = `https://api.github.com/repos/${owner}/${repo}/actions/secrets/${secretName}`;
 
@@ -65,6 +42,33 @@ async function updateGitHubSecret(secretName, secretValue) {
   );
 }
 
-await updateGitHubSecret('LEETCODE_CSRF_TOKEN', csrfToken);
-await updateGitHubSecret('LEETCODE_SESSION', session);
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
 
+  // Navigate to LeetCode login page
+  await page.goto('https://leetcode.com/accounts/login/');
+
+  // Fill in the email and password fields
+  await page.type('#id_login', email);
+  await page.type('#id_password', password);
+
+  // Click on the submit button
+  await Promise.all([
+    page.waitForNavigation(),
+    page.click('button[type="submit"]'),
+  ]);
+
+  // Get the CSRF token and session cookie
+  const csrfToken = (await page.cookies()).find(cookie => cookie.name === 'csrftoken').value;
+  const session = (await page.cookies()).find(cookie => cookie.name === 'LEETCODE_SESSION').value;
+
+  console.log('CSRF Token:', csrfToken);
+  console.log('Session:', session);
+
+  // Update GitHub secrets with new CSRF token and session values
+  await updateGitHubSecret('LEETCODE_CSRF_TOKEN', csrfToken);
+  await updateGitHubSecret('LEETCODE_SESSION', session);
+
+  await browser.close();
+})();
