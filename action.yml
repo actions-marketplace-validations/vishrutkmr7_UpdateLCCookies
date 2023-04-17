@@ -1,0 +1,35 @@
+name: "LeetCode Cookies Updater"
+description: "Automatically update LeetCode CSRF token and session cookie values in GitHub repository secrets every 2 weeks"
+author: "Vishrut Jha"
+branding:
+  icon: "refresh-cw"
+  color: "green"
+
+inputs:
+  github-token:
+    description: "GitHub token with repo scope"
+    required: true
+  leetcode-email:
+    description: "LeetCode account email"
+    required: true
+  leetcode-password:
+    description: "LeetCode account password"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: npm ci
+      shell: bash
+    - name: Fetch LeetCode cookies
+      run: node fetchLeetCodeCookies.js
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        LEETCODE_EMAIL: ${{ inputs.leetcode-email }}
+        LEETCODE_PASSWORD: ${{ inputs.leetcode-password }}
