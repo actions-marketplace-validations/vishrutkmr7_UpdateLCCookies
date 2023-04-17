@@ -1,7 +1,7 @@
 # LeetCode Cookies Updater
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/vishrutkmr7/leetcode-cookies-updater/Update%20Leetcode%20Cookies)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/vishrutkmr7/leetcode-cookies-updater)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/vishrutkmr7/UpdateLCCookies/Update%20Leetcode%20Cookies)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/vishrutkmr7/UpdateLCCookies)
 ![GitHub](https://img.shields.io/github/license/vishrutkmr7/UpdateLCCookies)
 
 **LeetCode Cookies Updater** is a GitHub Action that automatically updates LeetCode CSRF token and session cookie values in your GitHub repository secrets every 2 weeks. This is useful for keeping your LeetCode syncing workflows running without manual intervention.
