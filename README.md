@@ -51,4 +51,4 @@ We welcome contributions to the LeetCode Cookies Updater! If you'd like to contr
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE). The full text of the license can be found at https://choosealicense.com/licenses/mit/.
+This project is licensed under the [MIT License](LICENSE). The full text of the license can be found at <https://choosealicense.com/licenses/mit/>.
